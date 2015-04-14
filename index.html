@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>af test V2</title>
+    <style type="text/css">
+
+  	table{
+  		table-layout: fixed;
+  		border-spacing: 0;
+  		/*border: 1px solid black;*/
+  	}
+  	td, th{
+  		border: 1px solid black;
+  		padding: .5em;
+  	}
+  	</style>
+  </head>
+  <body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+        // first get json data
+        $.getJSON('data.json', function(data){
+
+          data.applicants.forEach(function(applicant){
+            // add skills and job property to each applicant. the property value will be an array of their skills and job
+            applicant.skills = [];
+            applicant.job = [];
+
+            // iterate through each applicant and add there corresponding skills
+            data.skills.forEach(function(skill){
+              if(applicant.skills && applicant.id == skill.applicant_id ){
+                applicant.skills.push(skill.name);
+              }
+            });
+            // iterate through jobs and add job name to each applicant
+            data.jobs.forEach(function(job){
+              if(applicant.job_id == job.id){
+                applicant.job = job.name
+              }
+            });
+          });
+
+          var count = data.applicants.length,
+              row = [];
+
+          for(var i=0; i< count; i++){
+            currentApplicant = data.applicants[i]
+            row.push(currentApplicant.name, currentApplicant.email, currentApplicant.website, currentApplicant.skills, currentApplicant.cover_letter)
+            console.log(row);
+            debugger
+
+          }
+
+        // console.log(data);
+
+        // var $tr = $("<tr></tr>");
+        // var $table = $("<table> <th>Job</th><th>Name</th><th>Email</th><th>Website</th><th>Skills</th><th>Cover Letter</th> </table>");
+    		// $('body').append($table);
+
+        }); // getJson
+
+      });
+
+    </script>
+  </body>
+</html>
